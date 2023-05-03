@@ -9,14 +9,31 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.6.0",
+    "@emotion/react": "^11.10.8",
+    "@emotion/styled": "^11.10.8",
+    "@supabase/auth-helpers-nextjs": "^0.6.1",
+    "@supabase/auth-helpers-react": "^0.3.1",
+    "@supabase/realtime-js": "^2.7.2",
+    "@supabase/supabase-js": "^2.21.0",
+    "@tanstack/react-query": "^4.29.5",
+    "@tanstack/react-query-devtools": "^4.29.6",
     "@types/node": "18.16.3",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
+    "@uniswap/sdk-core": "^3.2.2",
+    "@uniswap/v3-sdk": "^3.9.0",
+    "@uniswap/widgets": "^2.51.2",
+    "connectkit": "^1.2.3",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
+    "ethers": "^5",
+    "framer-motion": "^10.12.5",
     "next": "13.3.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.0.4"
+    "react-hook-form": "^7.43.9",
+    "typescript": "5.0.4",
+    "web3": "^1.9.0"
   }
 }
