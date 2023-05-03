@@ -35,7 +35,7 @@ export const realTx = async (
     sellAmount: Number.parseFloat(amountEth) * Math.pow(10, 18),
     includedSources: exchangeList,
     takerAddress: address,
-    slippagePercentage: 1,
+    // slippagePercentage: 1,
   };
 
   let response;
@@ -65,14 +65,16 @@ export const realTx = async (
         signedTx.rawTransaction ?? ""
       );
       console.log("Transaction sent to Flashbots with hash", txHash);
+
+      return txHash;
     } catch (err) {
       console.error(`Error sending transaction to Flashbots: ${err}`);
+      return err;
     }
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
+    throw err?.response?.data?.reason;
   }
-  console.log("Uniswap v2");
-  console.log("%O", response?.data);
 };
 
 const sendTransactionToFlashbots = async (signedTx: string) => {

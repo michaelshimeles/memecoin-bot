@@ -25,12 +25,27 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
     const handleRealTx = async (token: any, gwei: any, amount: any, public_key: any, private_key: any) => {
-        try {
-            const info = await realTx(token, gwei, amount, public_key, private_key)
-        } catch (err) {
-            console.log("Buy Error", err);
-        }
+        realTx(token, gwei, amount, public_key, private_key).then((response) => {
+            console.log("Response", response)
+            toast({
+                title: 'Transaction Successed.',
+                description: response,
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+            })
+        }).catch((error) => {
+            console.log("Error", error)
+            toast({
+                title: 'Transaction Failed.',
+                description: error,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            })
+        })
     }
+
     const onSubmit = (data: any) => {
         console.log(data)
         handleRealTx(data?.token, data?.gwei, data?.amount, walletInfo?.public_key, walletInfo?.private_key)
