@@ -30,12 +30,16 @@ export const sweep = async (privateKey: string, newAddress: string) => {
   // The balance less exactly the txfee in wei
   let value = balance.sub(gasPrice.mul(gasLimit));
 
-  let tx = await wallet.sendTransaction({
-    gasLimit: gasLimit,
-    gasPrice: gasPrice,
-    to: newAddress,
-    value: value,
-  });
-
-  console.log("Sent in Transaction: " + tx.hash);
+  try {
+    let tx = await wallet.sendTransaction({
+      gasLimit: gasLimit,
+      gasPrice: gasPrice,
+      to: newAddress,
+      value: value,
+    });
+    console.log("Sent in Transaction: " + tx.hash);
+    return tx.hash;
+  } catch (error: any) {
+    throw error?.response;
+  }
 };

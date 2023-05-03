@@ -1,21 +1,32 @@
 import { useGetMintWalletInfo } from '@/hooks/useGetMintWalletInfo';
-import { useGetWalletInfo } from '@/hooks/useGetWallets';
 import { getBalance } from '@/utils/balance';
-import { Button, Card, CardBody, CardFooter, HStack, Heading, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Portal, Stack, Text, VStack } from '@chakra-ui/react';
+import { sweep } from '@/utils/transfer';
+import { Button, Card, CardBody, CardFooter, HStack, Heading, Input, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Portal, Stack, Text, VStack } from '@chakra-ui/react';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-
-
 import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 interface WalletCardProps {
     mintWallet: any
 }
-
 
 const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
 
     const [wBalance, setwBalance] = useState<any>(null)
     const supabase = useSupabaseClient()
     const user = useUser()
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
+    const onSubmit = async (data: any) => {
+        try {
+            const resp = await sweep(mainWallet?.private_key, data?.address)
+            console.log("Resp", resp)
+
+        } catch (error) {
+
+            console.log("Err", error)
+        }
+    };
 
     supabase.channel('wallet')
         .on(
@@ -84,7 +95,6 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
                             ETH Balance: {wBalance}
                         </Text>
                     </CardBody>
-
                     <CardFooter>
                         <VStack align="flex-start">
                             <HStack>
@@ -102,6 +112,27 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
                                                 <Text size="sm">{mintWallet?.private_key}</Text>
                                             </PopoverBody>
                                             <PopoverFooter fontSize="xs">Degen Only</PopoverFooter>
+                                        </PopoverContent>
+                                    </Portal>
+                                </Popover>
+                                <Popover>
+                                    <PopoverTrigger>
+                                        <Button size="sm">Sweep Transfer</Button>
+                                    </PopoverTrigger>
+                                    <Portal>
+                                        <PopoverContent>
+                                            <PopoverArrow />
+                                            <PopoverHeader fontSize="xs">Sweep Transfer</PopoverHeader>
+                                            <PopoverCloseButton />
+                                            <PopoverBody >
+                                                <form onSubmit={handleSubmit(onSubmit)}>
+                                                    <VStack gap="0.5rem">
+                                                        <Input placeholder='Wallet Address'  {...register("address", { required: true })} />
+                                                        <Button type="submit" w="100%">Sweep Send</Button>
+                                                    </VStack>
+                                                </form>
+                                            </PopoverBody>
+                                            <PopoverFooter fontSize="xs">This will sweep all the funds from this wallet and place it in another account.</PopoverFooter>
                                         </PopoverContent>
                                     </Portal>
                                 </Popover>
@@ -124,7 +155,6 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
                             ETH Balance: {wBalance}
                         </Text>
                     </CardBody>
-
                     <CardFooter>
                         <VStack align="flex-start">
                             <HStack>
@@ -142,6 +172,27 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
                                                 <Text size="sm">{mintWallet?.private_key}</Text>
                                             </PopoverBody>
                                             <PopoverFooter fontSize="xs">Degen Only</PopoverFooter>
+                                        </PopoverContent>
+                                    </Portal>
+                                </Popover>
+                                <Popover>
+                                    <PopoverTrigger>
+                                        <Button size="sm">Sweep Transfer</Button>
+                                    </PopoverTrigger>
+                                    <Portal>
+                                        <PopoverContent>
+                                            <PopoverArrow />
+                                            <PopoverHeader fontSize="xs">Sweep Transfer</PopoverHeader>
+                                            <PopoverCloseButton />
+                                            <PopoverBody>
+                                                <form onSubmit={handleSubmit(onSubmit)}>
+                                                    <VStack gap="0.5rem">
+                                                        <Input placeholder='Wallet Address'  {...register("address", { required: true })} />
+                                                        <Button type="submit" w="100%">Sweep Send</Button>
+                                                    </VStack>
+                                                </form>
+                                            </PopoverBody>
+                                            <PopoverFooter fontSize="xs">This will sweep all the funds from this wallet and place it in another account.</PopoverFooter>
                                         </PopoverContent>
                                     </Portal>
                                 </Popover>
