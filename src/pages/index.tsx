@@ -12,6 +12,7 @@ import {
 import { useUser } from "@supabase/auth-helpers-react";
 import Head from 'next/head';
 import Layout from '../components/Layout/Layout';
+import Portfolio from '@/components/Portfolio/Portfolio';
 
 
 export default function Home() {
@@ -31,6 +32,7 @@ export default function Home() {
           <TabList>
             <Tab>Shitcoin Bot</Tab>
             <Tab>Wallet Manager</Tab>
+            <Tab>Portfolio</Tab>
             <Tab>Transactions</Tab>
           </TabList>
           <TabPanels>
@@ -39,6 +41,11 @@ export default function Home() {
             </TabPanel>
             <TabPanel>
               {user ? <Wallet /> : <VStack pt="4rem"><Heading>Need to Login</Heading></VStack>}
+            </TabPanel>
+            <TabPanel>
+              <VStack pt="4rem">
+                <Portfolio />
+              </VStack>
             </TabPanel>
             <TabPanel>
               <VStack pt="4rem">

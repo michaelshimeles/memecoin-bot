@@ -1,5 +1,5 @@
 import { useGetMintWalletInfo } from '@/hooks/useGetMintWalletInfo';
-import { realTx } from '@/utils/swap';
+import { realTx } from '@/utils/buy';
 import {
     Button, HStack,
     Heading, Input,
