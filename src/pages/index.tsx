@@ -35,14 +35,14 @@ export default function Home() {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Buying />
+              {user ? <Buying /> : <VStack pt="4rem"><Heading>Need to Login</Heading></VStack>}
             </TabPanel>
             <TabPanel>
-              <Wallet />
+              {user ? <Wallet /> : <VStack pt="4rem"><Heading>Need to Login</Heading></VStack>}
             </TabPanel>
             <TabPanel>
               <VStack pt="4rem">
-                  <Heading>Coming Soon</Heading>
+                <Heading>Coming Soon</Heading>
               </VStack>
             </TabPanel>
           </TabPanels>
