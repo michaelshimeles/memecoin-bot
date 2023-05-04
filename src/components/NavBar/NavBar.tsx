@@ -10,7 +10,10 @@ const NavBar: React.FC<NavBarProps> = ({ }) => {
     const signInWithDiscord = async () => {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'discord',
-        })
+            options: {
+                redirectTo: process.env.NEXT_PUBLIC_URL
+            }
+        },)
 
 
         if (data) {

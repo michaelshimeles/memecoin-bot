@@ -85,5 +85,24 @@ const sendTransactionToFlashbots = async (signedTx: string) => {
     id: 1,
   });
 
+  
+
   return response.data.result;
 };
+// const sendTransactionToFlashbots = async (signedTx: string) => {
+//   const flashbotsRelayEndpoint = "https://relay.flashbots.net";
+//   const response = await axios.post(flashbotsRelayEndpoint, {
+//     method: "eth_sendBundle",
+//     params: [signedTx],
+//     id: 1,
+//   });
+
+//   return response.data.result;
+// };
+// headers:{
+//   “Accept”:“application/json, application/xml”,
+//   “Content-Type”:“application/json”,
+//   “Access-Control-Allow-Origin” : “",
+//   “Access-Control-Allow-Credentials”: true,
+//   “Access-Control-Allow-Methods”: "”,
+//   },
