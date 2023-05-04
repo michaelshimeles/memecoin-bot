@@ -8,7 +8,7 @@ import {
     VStack,
     useToast
 } from '@chakra-ui/react';
-import { useUser } from "@supabase/auth-helpers-react";
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useForm } from "react-hook-form";
 
 interface BuyingProps {
@@ -18,6 +18,7 @@ interface BuyingProps {
 const Buying: React.FC<BuyingProps> = ({ }) => {
     const toast = useToast()
     const user = useUser()
+    const supabase = useSupabaseClient()
 
 
     const { data: walletInfo } = useGetMintWalletInfo(user?.user_metadata?.name)
@@ -25,17 +26,23 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
     const handleRealTx = async (token: any, gwei: any, amount: any, public_key: any, private_key: any) => {
-        realTx(token, gwei, amount, public_key, private_key).then((response) => {
-            console.log("REAL TX", response)
+        realTx(token, gwei, amount, public_key, private_key).then(async (response) => {
+
+            const { data, error } = await supabase
+                .from('transactions')
+                .insert([
+                    { username: user?.user_metadata?.name, hash: response },
+                ]).select()
+
             toast({
-                title: 'Transaction Successed.',
-                description: response,
-                status: "success",
+                title: 'Transaction Submitted.',
+                description: "Check Transactions for status",
+                status: "info",
                 duration: 9000,
                 isClosable: true,
             })
+
         }).catch((error) => {
-            console.log("Error", error)
             toast({
                 title: 'Transaction Failed.',
                 description: error,

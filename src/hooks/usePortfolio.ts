@@ -19,7 +19,7 @@ function fetchPortfolio(address: string) {
 
 export const usePortfolio = (address?: string) => {
   return useQuery({
-    queryKey: ["wallets", address],
+    queryKey: ["portfolio", address],
     queryFn: () => (address ? fetchPortfolio(address) : undefined),
     enabled: !!address,
   });

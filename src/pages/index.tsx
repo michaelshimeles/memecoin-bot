@@ -13,6 +13,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import Head from 'next/head';
 import Layout from '../components/Layout/Layout';
 import Portfolio from '@/components/Portfolio/Portfolio';
+import Transactions from '@/components/Transactions/Transactions';
 
 
 export default function Home() {
@@ -48,9 +49,7 @@ export default function Home() {
               </VStack>
             </TabPanel>
             <TabPanel>
-              <VStack pt="4rem">
-                <Heading>Coming Soon</Heading>
-              </VStack>
+              <Transactions />
             </TabPanel>
           </TabPanels>
         </Tabs>

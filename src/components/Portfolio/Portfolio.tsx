@@ -14,7 +14,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ }) => {
     const { data: mintWallet } = useGetMintWalletInfo(user?.user_metadata?.name)
 
     const { data: portfolio } = usePortfolio(mintWallet?.public_key)
-
     return (
         <VStack>
             {portfolio?.data && portfolio?.data.map((coin: any, index: number) => {

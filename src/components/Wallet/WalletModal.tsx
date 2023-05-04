@@ -20,7 +20,6 @@ const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => {
 
     const handleWalletCreate = () => {
         const wallets = createWallets()
-        console.log("Wallets", wallets)
         storeWallets(wallets?.address, wallets?.private_key)
     }
 

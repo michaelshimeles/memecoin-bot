@@ -1,6 +1,6 @@
 import { useGetMintWalletInfo } from '@/hooks/useGetMintWalletInfo';
 import { sell } from '@/utils/sell';
-import { Card, Stack, CardBody, Heading, CardFooter, Button, Text, VStack, Badge, HStack, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Input, useToast } from '@chakra-ui/react';
+import { Card,Tooltip, Stack, CardBody, Heading, CardFooter, Button, Text, VStack, Badge, HStack, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Input, useToast } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
 import React from 'react'
 import { useForm } from "react-hook-form";
@@ -19,22 +19,11 @@ const PortfolioCard: React.FC<PortfolioCardProps> = ({ name, symbol, amount, add
 
     const handleSellTx = async (token: any, gwei: any, amount: any, public_key: any, private_key: any) => {
         sell(token, gwei, amount, public_key, private_key).then((response) => {
-            toast({
-                title: 'Transaction Successed.',
-                description: response,
-                status: "success",
-                duration: 9000,
-                isClosable: true,
-            })
+
+         
         }).catch((error) => {
             console.log("Error", error)
-            toast({
-                title: 'Transaction Failed.',
-                description: error,
-                status: "error",
-                duration: 9000,
-                isClosable: true,
-            })
+           
         })
     }
 
@@ -70,9 +59,11 @@ const PortfolioCard: React.FC<PortfolioCardProps> = ({ name, symbol, amount, add
                             closeOnBlur={false}
                         >
                             <PopoverTrigger>
-                                <Button variant="outline" colorScheme='black' borderColor="whiteAlpha.300">
-                                    Sell
-                                </Button>
+                                <Tooltip hasArrow label='Not Active Yet'>
+                                    <Button variant="outline" colorScheme='black' borderColor="whiteAlpha.300">
+                                        Sell
+                                    </Button>
+                                </Tooltip>
                             </PopoverTrigger>
                             <PopoverContent>
                                 <PopoverArrow />

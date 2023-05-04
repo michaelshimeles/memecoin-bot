@@ -127,7 +127,7 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
                                                     </VStack>
                                                 </form>
                                             </PopoverBody>
-                                            <PopoverFooter fontSize="xs">This will sweep all the funds from this wallet and place it in another account.</PopoverFooter>
+                                            <PopoverFooter fontSize="xs">This will sweep all the ETH from this wallet and place it in another account. It will not transfer your other coins.</PopoverFooter>
                                         </PopoverContent>
                                     </Portal>
                                 </Popover>

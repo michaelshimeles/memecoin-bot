@@ -22,11 +22,11 @@ export const realTx = async (
   address: string,
   privateKey: string
 ) => {
-  console.log("buyToken", buyToken);
-  console.log("gwei", gwei);
-  console.log("amountEth", amountEth);
-  console.log("address", address);
-  console.log("privateKey", privateKey);
+  // console.log("buyToken", buyToken);
+  // console.log("gwei", gwei);
+  // console.log("amountEth", amountEth);
+  // console.log("address", address);
+  // console.log("privateKey", privateKey);
 
   const exchangeList = "Uniswap_V2";
   const params = {
@@ -40,12 +40,9 @@ export const realTx = async (
 
   let response;
 
-  let blockNumber;
-
   try {
     response = await axios.get(`${URL}${qs.stringify(params)}`, { headers });
-    blockNumber = await web3.eth.getBlockNumber();
-    console.log("RES RES", response?.data);
+    // console.log("RES RES", response?.data);
 
     const txConfig: TransactionConfig = {
       from: address,
@@ -62,12 +59,11 @@ export const realTx = async (
       privateKey
     );
 
-    console.log("signedTx", signedTx);
+    // console.log("signedTx", signedTx);
 
     try {
       const txHash = await sendTransaction(
         signedTx.rawTransaction ?? "",
-        blockNumber
       );
       console.log("Transaction sent to Flashbots with hash", txHash);
 
@@ -82,7 +78,11 @@ export const realTx = async (
   }
 };
 
-const sendTransaction = async (signedTx: string, blockNumber: any) => {
+const sendTransaction = async (signedTx: string) => {
+  const latestBlockNumber = await web3.eth.getBlockNumber();
+  const maxBlockNumber = latestBlockNumber + 10;
+  const maxBlockNumberHex = "0x" + maxBlockNumber.toString(16);
+
   const options = {
     method: "POST",
     headers: { accept: "application/json", "content-type": "application/json" },
@@ -93,7 +93,7 @@ const sendTransaction = async (signedTx: string, blockNumber: any) => {
       params: [
         {
           tx: signedTx, // replace with the raw signed transaction hex string
-          maxBlockNumber: "0x" + blockNumber.toString(16), // replace with the highest block number in which the transaction should be included, in hex format
+          maxBlockNumber:maxBlockNumberHex, // replace with the highest block number in which the transaction should be included, in hex format
           debug: true, // add debug field to return extra transaction details
         },
       ],
@@ -105,36 +105,10 @@ const sendTransaction = async (signedTx: string, blockNumber: any) => {
       options
     );
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     return data.result;
   } catch (err) {
     console.error(err);
     throw err;
   }
 };
-
-// {
-//   "jsonrpc": "2.0",
-//   "id": 1,
-//   "method": "eth_sendPrivateTransaction",
-//   "params": [
-//     {
-//       "tx": signedTx?.transactionHash,
-//       "maxBlockNumber": "0xcd23a0",
-//       "preferences": {
-//         "fast": true, // left for backwards compatibility; may be removed in a future version
-//         "auction": {
-//           "hint": ["calldata", "transaction_hash"],
-//           "builders": ["default"]
-//         }
-//       }
-//     }
-//   ]
-// }
-
-// body: JSON.stringify({
-//   id: 1,
-//   jsonrpc: "2.0",
-//   method: "eth_sendRawTransaction",
-//   params: [signedTx],
-// }),
