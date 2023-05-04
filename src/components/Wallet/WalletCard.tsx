@@ -1,9 +1,10 @@
 import { useGetMintWalletInfo } from '@/hooks/useGetMintWalletInfo';
+import { usePortfolio } from '@/hooks/usePortfolio';
 import { getBalance } from '@/utils/balance';
 import { sweep } from '@/utils/transfer';
-import { Button, Card, CardBody, CardFooter, HStack, Heading, Input, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Portal, Stack, Text, VStack } from '@chakra-ui/react';
+import { Button, Select, Card, CardBody, CardFooter, HStack, Heading, Input, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Portal, Stack, Text, VStack, Box, Radio, RadioGroup } from '@chakra-ui/react';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface WalletCardProps {
@@ -17,11 +18,26 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
     const user = useUser()
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
-    const onSubmit = async (data: any) => {
-        try {
-            const resp = await sweep(mainWallet?.private_key, data?.address)
-        } catch (error) {
+    const { data: mainWallet, refetch } = useGetMintWalletInfo(user?.user_metadata?.name)
+    const { data: portfolio } = usePortfolio(mainWallet?.public_key)
 
+
+    const onSubmit = async (data: any) => {
+        console.log("Data", data)
+        console.log("Private", mainWallet?.private_key)
+        console.log("address", data?.address)
+        console.log("tokenAddress", portfolio?.data?.[1]?.attributes?.fungible_info.implementations[0].address)
+        console.log("amount", "100")
+
+        const privateKey = mainWallet?.private_key; // replace with your private key
+        const newAddress = data?.address; // replace with the address you want to transfer the tokens to
+        const tokenAddress = portfolio?.data?.[1]?.attributes?.fungible_info.implementations[0].address; // replace with the address of the ERC-20 token contract
+        const amount = "100";
+
+        try {
+            const resp = await sweep(privateKey, newAddress, tokenAddress, amount)
+            console.log("resp", resp)
+        } catch (error) {
             console.log("Err", error)
         }
     };
@@ -52,7 +68,6 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
 
     }
 
-    const { data: mainWallet, refetch } = useGetMintWalletInfo(user?.user_metadata?.name)
 
     const handleMakeActive = async () => {
 
@@ -123,6 +138,14 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
                                                 <form onSubmit={handleSubmit(onSubmit)}>
                                                     <VStack gap="0.5rem">
                                                         <Input placeholder='Wallet Address'  {...register("address", { required: true })} />
+                                                        {/* <VStack>
+
+                                                            <VStack w="100%" align="flex-start">
+                                                                <Input placeholder={portfolio?.data?.[1]?.attributes?.fungible_info?.name} value={portfolio?.data?.[1]?.attributes?.fungible_info.implementations[0].address}  {...register("amount", { required: true })} />
+                                                                <Input placeholder={portfolio?.data?.[1]?.attributes.quantity.int} value={portfolio?.data?.[1]?.attributes.quantity.int}  {...register("amount", { required: true })} />
+                                                            </VStack>
+
+                                                        </VStack> */}
                                                         <Button type="submit" w="100%">Sweep Send</Button>
                                                     </VStack>
                                                 </form>
@@ -197,8 +220,9 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
                     </CardFooter>
 
                 </Stack>
-            </Card>}
-        </VStack>
+            </Card>
+            }
+        </VStack >
     );
 }
 
