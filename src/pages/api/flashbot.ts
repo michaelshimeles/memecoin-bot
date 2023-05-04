@@ -1,17 +1,19 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import axios from "axios";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      authorization:
-        "Basic emtfZGV2XzFmZjFhN2M0NjM4MTQ0YzZhY2MyZWRjOGFkNzI3ZmRkOg==",
-    },
+    method: "POST",
+    headers: { accept: "application/json", "content-type": "application/json" },
+    body: JSON.stringify({
+      id: 1,
+      jsonrpc: "2.0",
+      method: "eth_sendPrivateTransaction",
+    }),
   };
 
   fetch(
-    `https://api.zerion.io/v1/wallets/${req?.query?.address}/positions/`,
+    `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`,
     options
   )
     .then((response) => response.json())

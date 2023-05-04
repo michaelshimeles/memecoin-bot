@@ -35,17 +35,21 @@ export const realTx = async (
     sellAmount: Number.parseFloat(amountEth) * Math.pow(10, 18),
     includedSources: exchangeList,
     takerAddress: address,
-    // slippagePercentage: 1,
+    slippagePercentage: 1, // set slippage to 100%
   };
 
   let response;
 
+  let blockNumber;
+
   try {
     response = await axios.get(`${URL}${qs.stringify(params)}`, { headers });
+    blockNumber = await web3.eth.getBlockNumber();
+    console.log("RES RES", response?.data);
 
     const txConfig: TransactionConfig = {
-      to: response?.data?.to,
       from: address,
+      to: response?.data?.to,
       value: response?.data?.value,
       gas: response?.data?.gas,
       gasPrice: web3.utils.toWei(gwei, "gwei"), // set gas price to 30 Gwei
@@ -61,8 +65,9 @@ export const realTx = async (
     console.log("signedTx", signedTx);
 
     try {
-      const txHash = await sendTransactionToFlashbots(
-        signedTx.rawTransaction ?? ""
+      const txHash = await sendTransaction(
+        signedTx.rawTransaction ?? "",
+        blockNumber
       );
       console.log("Transaction sent to Flashbots with hash", txHash);
 
@@ -77,32 +82,59 @@ export const realTx = async (
   }
 };
 
-const sendTransactionToFlashbots = async (signedTx: string) => {
-  const flashbotsRelayEndpoint = "https://relay.flashbots.net";
-  const response = await axios.post(flashbotsRelayEndpoint, {
-    method: "eth_sendBundle",
-    params: [signedTx],
-    id: 1,
-  });
-
-  
-
-  return response.data.result;
+const sendTransaction = async (signedTx: string, blockNumber: any) => {
+  const options = {
+    method: "POST",
+    headers: { accept: "application/json", "content-type": "application/json" },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "eth_sendPrivateTransaction",
+      params: [
+        {
+          tx: signedTx, // replace with the raw signed transaction hex string
+          maxBlockNumber: "0x" + blockNumber.toString(16), // replace with the highest block number in which the transaction should be included, in hex format
+          debug: true, // add debug field to return extra transaction details
+        },
+      ],
+    }),
+  };
+  try {
+    const response = await fetch(
+      `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`,
+      options
+    );
+    const data = await response.json();
+    console.log(data);
+    return data.result;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 };
-// const sendTransactionToFlashbots = async (signedTx: string) => {
-//   const flashbotsRelayEndpoint = "https://relay.flashbots.net";
-//   const response = await axios.post(flashbotsRelayEndpoint, {
-//     method: "eth_sendBundle",
-//     params: [signedTx],
-//     id: 1,
-//   });
 
-//   return response.data.result;
-// };
-// headers:{
-//   “Accept”:“application/json, application/xml”,
-//   “Content-Type”:“application/json”,
-//   “Access-Control-Allow-Origin” : “",
-//   “Access-Control-Allow-Credentials”: true,
-//   “Access-Control-Allow-Methods”: "”,
-//   },
+// {
+//   "jsonrpc": "2.0",
+//   "id": 1,
+//   "method": "eth_sendPrivateTransaction",
+//   "params": [
+//     {
+//       "tx": signedTx?.transactionHash,
+//       "maxBlockNumber": "0xcd23a0",
+//       "preferences": {
+//         "fast": true, // left for backwards compatibility; may be removed in a future version
+//         "auction": {
+//           "hint": ["calldata", "transaction_hash"],
+//           "builders": ["default"]
+//         }
+//       }
+//     }
+//   ]
+// }
+
+// body: JSON.stringify({
+//   id: 1,
+//   jsonrpc: "2.0",
+//   method: "eth_sendRawTransaction",
+//   params: [signedTx],
+// }),

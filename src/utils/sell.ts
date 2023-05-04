@@ -31,11 +31,11 @@ export const sell = async (
   const exchangeList = "Uniswap_V2";
   const params = {
     buyToken: "ETH",
-    sellToken: "ETH",
-    sellAmount: Number.parseFloat(amountToken) * Math.pow(10, 18),
+    sellToken: sellTokenAddress,
+    sellAmount: Math.floor(Number.parseFloat(amountToken) * Math.pow(10, 18)),
     includedSources: exchangeList,
     takerAddress: address,
-    // slippagePercentage: 1,
+    slippagePercentage: 1, // set slippage to 100%
   };
 
   let response;
@@ -61,15 +61,13 @@ export const sell = async (
     console.log("signedTx", signedTx);
 
     try {
-      const txHash = await sendTransactionToFlashbots(
-        signedTx.rawTransaction ?? ""
-      );
+      const txHash = await sendTransaction(signedTx.rawTransaction ?? "");
       console.log("Transaction sent to Flashbots with hash", txHash);
 
       return txHash;
     } catch (err) {
       console.error(`Error sending transaction to Flashbots: ${err}`);
-      return err;
+      throw err;
     }
   } catch (err: any) {
     console.error(err);
@@ -77,13 +75,28 @@ export const sell = async (
   }
 };
 
-const sendTransactionToFlashbots = async (signedTx: string) => {
-  const flashbotsRelayEndpoint = "https://relay.flashbots.net";
-  const response = await axios.post(flashbotsRelayEndpoint, {
-    method: "eth_sendBundle",
-    params: [signedTx],
-    id: 1,
-  });
+const sendTransaction = async (signedTx: string) => {
+  const options = {
+    method: "POST",
+    headers: { accept: "application/json", "content-type": "application/json" },
+    body: JSON.stringify({
+      id: 1,
+      jsonrpc: "2.0",
+      method: "eth_sendRawTransaction",
+      params: [signedTx],
+    }),
+  };
 
-  return response.data.result;
+  try {
+    const response = await fetch(
+      `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`,
+      options
+    );
+    const data = await response.json();
+    console.log(data);
+    return data.result;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 };

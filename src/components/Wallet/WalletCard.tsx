@@ -20,8 +20,6 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
     const onSubmit = async (data: any) => {
         try {
             const resp = await sweep(mainWallet?.private_key, data?.address)
-            console.log("Resp", resp)
-
         } catch (error) {
 
             console.log("Err", error)
@@ -47,8 +45,6 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
         try {
             const balance = await getBalance(wallet)
             setwBalance(balance)
-            console.log("b", balance)
-            // return balance
         } catch (error) {
             console.log("error", error)
             return error
@@ -66,7 +62,6 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
             .eq('username', user?.user_metadata?.name);
 
         if (data) {
-            console.log("Active Wallet", data)
             return
         }
 

@@ -26,7 +26,7 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
 
     const handleRealTx = async (token: any, gwei: any, amount: any, public_key: any, private_key: any) => {
         realTx(token, gwei, amount, public_key, private_key).then((response) => {
-            console.log("Response", response)
+            console.log("REAL TX", response)
             toast({
                 title: 'Transaction Successed.',
                 description: response,

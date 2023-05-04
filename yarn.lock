@@ -1536,6 +1536,11 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
+"@flashbots/ethers-provider-bundle@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@flashbots/ethers-provider-bundle/-/ethers-provider-bundle-0.6.1.tgz#30b0ff86d1b96e10c34f3dcba774b8908edb7f12"
+  integrity sha512-W7tSX832mi7XKlbg4dIMzV1HMw5Dg0ox0YOqPxW2nO2JqsAZwWYFrAk4nNZnsqRdexHiPF4JUYez/ELI5VpScA==
+
 "@fontsource/ibm-plex-mono@^4.5.1":
   version "4.5.13"
   resolved "https://registry.yarnpkg.com/@fontsource/ibm-plex-mono/-/ibm-plex-mono-4.5.13.tgz#f91559ab3b5074a8e2db75c0370b9640e80c99b2"

@@ -17,7 +17,6 @@ const NavBar: React.FC<NavBarProps> = ({ }) => {
 
 
         if (data) {
-            console.log(data)
             return data
         }
 
