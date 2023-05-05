@@ -57,7 +57,7 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
 
     const onSubmit = (data: any) => {
         console.log(data, gasSelect)
-        handleRealTx(data?.token, gasSelect, data?.amount, walletInfo?.public_key, walletInfo?.private_key)
+        handleRealTx(data?.token, String(gasSelect), data?.amount, walletInfo?.public_key, walletInfo?.private_key)
     }
     const handleGas = (gas: any) => {
         console.log(gas)
