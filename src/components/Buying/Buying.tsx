@@ -4,12 +4,12 @@ import { realTx } from '@/utils/buy';
 import {
     Button, HStack,
     Heading, Input,
+    Select,
     Text,
     VStack,
     useToast
 } from '@chakra-ui/react';
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { useState } from 'react';
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useForm } from "react-hook-form";
 
 interface BuyingProps {
@@ -20,10 +20,12 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
     const toast = useToast()
     const user = useUser()
     const supabase = useSupabaseClient()
-    const [gasSelect, setGasSelect] = useState<any>(null)
+
 
     const { data: walletInfo } = useGetMintWalletInfo(user?.user_metadata?.name)
     const { data: gas } = useGasPrice()
+
+    console.log("Gas", gas?.data?.[4])
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
@@ -56,12 +58,8 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
     }
 
     const onSubmit = (data: any) => {
-        console.log(data, gasSelect)
-        handleRealTx(data?.token, String(gasSelect), data?.amount, walletInfo?.public_key, walletInfo?.private_key)
-    }
-    const handleGas = (gas: any) => {
-        console.log(gas)
-        setGasSelect(gas)
+        console.log(data)
+        handleRealTx(data?.token, data?.gwei, data?.amount, walletInfo?.public_key, walletInfo?.private_key)
     }
 
     return (
@@ -73,29 +71,11 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
             }}>
                 <VStack gap="0.5rem" w="full">
                     <Input placeholder="token address" {...register("token", { required: true })} />
-                    <HStack w="100%">
-                        <Input
-                            value={gasSelect || ""}
-                            placeholder="gwei"
-                            // {...register("gwei", { required: true })}
-                            onChange={(event) => setGasSelect(event.target.value)}
-                        />
-                        <Button variant="outline" onClick={() => handleGas(gas?.data?.[4]?.attributes?.info?.slow / 1000000000)}>
-                            🐢 {gas?.data?.[4]?.attributes?.info?.slow / 1000000000}
-                        </Button>
-                        <Button variant="outline" onClick={() => handleGas(gas?.data?.[4]?.attributes?.info?.standard / 1000000000)}>
-                            🚗 {gas?.data?.[4]?.attributes?.info?.standard / 1000000000}
-                        </Button>
-                        <Button variant="outline" onClick={() => handleGas(gas?.data?.[4]?.attributes?.info?.fast / 1000000000)}>
-                            🚀 {gas?.data?.[4]?.attributes?.info?.fast / 1000000000}
-                        </Button>
-                    </HStack>
+                    <Input placeholder="gwei" {...register("gwei", { required: true })} />
                     <Input placeholder="ETH Amount" {...register("amount", { required: true })} />
                     <Input defaultValue={walletInfo?.public_key} disabled />
                     <HStack pt="1rem" justify="center">
-                        <Button type="submit" variant="outline">
-                            Gen Wealth
-                        </Button>
+                        <Button type="submit" variant="outline">Lose Money</Button>
                     </HStack>
                 </VStack>
             </form>
