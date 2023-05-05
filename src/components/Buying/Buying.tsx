@@ -4,12 +4,11 @@ import { realTx } from '@/utils/buy';
 import {
     Button, HStack,
     Heading, Input,
-    Select,
     Text,
     VStack,
     useToast
 } from '@chakra-ui/react';
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
 
