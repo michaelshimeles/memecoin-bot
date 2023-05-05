@@ -18,8 +18,11 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
     const onSubmit = async (data: any) => {
+
         try {
             const resp = await sweep(mainWallet?.private_key, data?.address)
+
+            
         } catch (error) {
 
             console.log("Err", error)
@@ -204,4 +207,8 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
 
 export default WalletCard;
 
+
+function useToast() {
+    throw new Error('Function not implemented.');
+}
 

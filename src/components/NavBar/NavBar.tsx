@@ -1,3 +1,4 @@
+import { useGasPrice } from '@/hooks/useGasPrice';
 import { Avatar, Box, Button, HStack, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverTrigger, Text } from '@chakra-ui/react';
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 interface NavBarProps { }
@@ -34,9 +35,16 @@ const NavBar: React.FC<NavBarProps> = ({ }) => {
         }
     }
 
+    const { data: gas } = useGasPrice()
 
+    console.log("Gas", gas?.data?.[4])
     return (
-        <HStack w="95%" p="1rem" justify="flex-end">
+        <HStack w="95%" p="1rem" justify="space-between">
+            <HStack>
+                {gas?.data?.[4]?.attributes?.info?.slow && <Text as="b">🐢 {gas?.data?.[4]?.attributes?.info?.slow / 1000000000}</Text>}
+                {gas?.data?.[4]?.attributes?.info?.standard && <Text as="b">🚗 {gas?.data?.[4]?.attributes?.info?.standard / 1000000000}</Text>}
+                {gas?.data?.[4]?.attributes?.info?.fast && <Text as="b">🚀 {gas?.data?.[4]?.attributes?.info?.fast / 1000000000}</Text>}
+            </HStack>
             {user ?
                 <Box>
                     <Popover>

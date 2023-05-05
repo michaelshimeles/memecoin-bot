@@ -23,4 +23,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .catch((err) => {
       return res.status(400).json(err);
     });
+    
+  return;
 };

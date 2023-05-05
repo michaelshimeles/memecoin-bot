@@ -7,7 +7,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res,
   });
 
-  console.log("req.query?.username", req.query?.username);
   let { data: transactions, error } = await supabase
     .from("transactions")
     .select("*")
