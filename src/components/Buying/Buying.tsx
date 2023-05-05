@@ -75,7 +75,7 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
                     <Input placeholder="ETH Amount" {...register("amount", { required: true })} />
                     <Input defaultValue={walletInfo?.public_key} disabled />
                     <HStack pt="1rem" justify="center">
-                        <Button type="submit" variant="outline">Lose Money</Button>
+                        <Button type="submit" variant="outline">Gen Wealth</Button>
                     </HStack>
                 </VStack>
             </form>
