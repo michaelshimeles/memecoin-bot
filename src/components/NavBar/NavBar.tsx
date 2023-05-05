@@ -39,12 +39,12 @@ const NavBar: React.FC<NavBarProps> = ({ }) => {
 
     console.log("Gas", gas?.data?.[4])
     return (
-        <HStack w="95%" p="1rem" justify="space-between">
-            <HStack>
+        <HStack w="95%" p="1rem" justify="flex-end">
+            {/* <HStack>
                 {gas?.data?.[4]?.attributes?.info?.slow && <Text as="b">🐢 {gas?.data?.[4]?.attributes?.info?.slow / 1000000000}</Text>}
                 {gas?.data?.[4]?.attributes?.info?.standard && <Text as="b">🚗 {gas?.data?.[4]?.attributes?.info?.standard / 1000000000}</Text>}
                 {gas?.data?.[4]?.attributes?.info?.fast && <Text as="b">🚀 {gas?.data?.[4]?.attributes?.info?.fast / 1000000000}</Text>}
-            </HStack>
+            </HStack> */}
             {user ?
                 <Box>
                     <Popover>
