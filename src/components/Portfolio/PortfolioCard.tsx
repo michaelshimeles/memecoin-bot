@@ -49,7 +49,7 @@ const PortfolioCard: React.FC<PortfolioCardProps> = ({ name, symbol, amount, add
                         Address: {address}
                     </Text>
                     <Text py='2'>
-                        Amount: {amount}
+                        Amount: {Math.round(amount * 100) / 100}
                     </Text>
                 </CardBody>
                 <CardFooter>

@@ -28,12 +28,12 @@ export const realTx = async (
   // console.log("address", address);
   // console.log("privateKey", privateKey);
 
-  const exchangeList = "Uniswap, Uniswap_V2, Uniswap_V3";
+  // const exchangeList = "Uniswap, Uniswap_V2, Uniswap_V3";
   const params = {
     buyToken,
     sellToken: "ETH",
     sellAmount: Number.parseFloat(amountEth) * Math.pow(10, 18),
-    includedSources: exchangeList,
+    // includedSources: exchangeList,
     takerAddress: address,
     slippagePercentage: 1, // set slippage to 100%
   };
