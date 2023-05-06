@@ -64,7 +64,7 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
 
     return (
         <VStack w="100%" pt="2rem">
-            <Heading>Shitcoin Bot</Heading>
+            <Heading>Memecoin Bot</Heading>
             <Text textAlign="center">Seamlessly front run others into shitcoins with the quickness. Please use a burner wallet and not your actual wallet.</Text>
             <form onSubmit={handleSubmit(onSubmit)} style={{
                 width: "100%"

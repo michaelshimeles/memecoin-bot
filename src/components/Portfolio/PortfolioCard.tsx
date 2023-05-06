@@ -1,6 +1,6 @@
 import { useGetMintWalletInfo } from '@/hooks/useGetMintWalletInfo';
 import { sell } from '@/utils/sell';
-import { Card,Tooltip, Stack, CardBody, Heading, CardFooter, Button, Text, VStack, Badge, HStack, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Input, useToast } from '@chakra-ui/react';
+import { Card, Tooltip, Stack, CardBody, Heading, CardFooter, Button, Text, VStack, Badge, HStack, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Input, useToast } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
 import React from 'react'
 import { useForm } from "react-hook-form";
@@ -20,10 +20,10 @@ const PortfolioCard: React.FC<PortfolioCardProps> = ({ name, symbol, amount, add
     const handleSellTx = async (token: any, gwei: any, amount: any, public_key: any, private_key: any) => {
         sell(token, gwei, amount, public_key, private_key).then((response) => {
 
-         
+
         }).catch((error) => {
             console.log("Error", error)
-           
+
         })
     }
 
@@ -46,10 +46,10 @@ const PortfolioCard: React.FC<PortfolioCardProps> = ({ name, symbol, amount, add
                 <CardBody>
                     <Heading size='md'>{name}</Heading>
                     <Text py='2'>
-                        Token Address: {address}
+                        Address: {address}
                     </Text>
                     <Text py='2'>
-                        Token Amount: {amount}
+                        Amount: {amount}
                     </Text>
                 </CardBody>
                 <CardFooter>

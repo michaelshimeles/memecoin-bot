@@ -28,7 +28,7 @@ export const realTx = async (
   // console.log("address", address);
   // console.log("privateKey", privateKey);
 
-  const exchangeList = "Uniswap_V2";
+  const exchangeList = "Uniswap, Uniswap_V2, Uniswap_V3";
   const params = {
     buyToken,
     sellToken: "ETH",

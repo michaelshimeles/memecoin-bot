@@ -31,7 +31,7 @@ export default function Home() {
 
         <Tabs w="60rem" pt="3rem">
           <TabList>
-            <Tab>Shitcoin Bot</Tab>
+            <Tab>Memecoin Bot</Tab>
             <Tab>Wallet Manager</Tab>
             <Tab>Portfolio</Tab>
             <Tab>Transactions</Tab>

@@ -17,6 +17,5 @@ export const useGasPrice = () => {
   return useQuery({
     queryKey: ["gas-price"],
     queryFn: () => fetchGasPrice(),
-    refetchInterval: 10000
   });
 };
