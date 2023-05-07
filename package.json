@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@0x/contract-wrappers": "^13.23.1",
+    "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.6.0",
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
