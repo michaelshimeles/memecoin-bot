@@ -1,6 +1,7 @@
 import Buying from '@/components/Buying/Buying';
 import Wallet from '@/components/Wallet/Wallet';
 import {
+  Center,
   Heading,
   Tab,
   TabList,
@@ -35,6 +36,8 @@ export default function Home() {
             <Tab>Wallet Manager</Tab>
             <Tab>Portfolio</Tab>
             <Tab>Transactions</Tab>
+            <Tab>Leaderboard</Tab>
+            <Tab>Global Chat</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -50,6 +53,20 @@ export default function Home() {
             </TabPanel>
             <TabPanel>
               <Transactions />
+            </TabPanel>
+            <TabPanel>
+              <VStack>
+                <Center pt="5rem">
+                  <Heading>Coming soon!</Heading>
+                </Center>
+              </VStack>
+            </TabPanel>
+            <TabPanel>
+              <VStack>
+                <Center pt="5rem">
+                  <Heading>Coming soon!</Heading>
+                </Center>
+              </VStack>
             </TabPanel>
           </TabPanels>
         </Tabs>

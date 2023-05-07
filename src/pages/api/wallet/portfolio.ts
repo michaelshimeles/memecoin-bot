@@ -1,24 +1,26 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const options = {
     method: "GET",
     headers: {
       accept: "application/json",
       authorization:
-        "Basic emtfZGV2XzFmZjFhN2M0NjM4MTQ0YzZhY2MyZWRjOGFkNzI3ZmRkOg==",
+        `Basic ${process.env.NEXT_PUBLIC_ZERION}`,
     },
   };
 
-  fetch(
-    `https://api.zerion.io/v1/wallets/${req?.query?.address}/positions/`,
-    options
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      return res.status(200).json(response);
-    })
-    .catch((err) => {
-      return res.status(400).json(err);
-    });
-};
+  try {
+    const response = await fetch(
+      `https://api.zerion.io/v1/wallets/${req?.query?.address}/positions/`,
+      options
+    );
+    const data = await response.json();
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+}

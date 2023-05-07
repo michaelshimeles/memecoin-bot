@@ -45,11 +45,11 @@ const PortfolioCard: React.FC<PortfolioCardProps> = ({ name, symbol, amount, add
             <Stack w="full">
                 <CardBody>
                     <Heading size='md'>{name}</Heading>
-                    <Text py='2'>
+                    {name !== "Ethereum" && <Text py='2'>
                         Address: {address}
-                    </Text>
+                    </Text>}
                     <Text py='2'>
-                        Amount: {Math.round(amount * 100) / 100}
+                        Amount: {(Math.round(amount * 100) / 100).toLocaleString()}
                     </Text>
                 </CardBody>
                 <CardFooter>

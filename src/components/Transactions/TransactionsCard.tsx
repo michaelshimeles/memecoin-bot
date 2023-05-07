@@ -1,6 +1,7 @@
-import { Card, Text, Stack, CardBody, Heading, CardFooter, HStack, Popover, PopoverTrigger, Button, PopoverContent, PopoverArrow, PopoverCloseButton, PopoverHeader, VStack, Input, Badge } from '@chakra-ui/react';
+import { Card, useToast, Text, Stack, CardBody, Heading, CardFooter, HStack, Popover, PopoverTrigger, Button, PopoverContent, PopoverArrow, PopoverCloseButton, PopoverHeader, VStack, Input, Badge } from '@chakra-ui/react';
 import React from 'react'
 import { useGetTxInfo } from '@/hooks/useGetTxInfo';
+import axios from "axios"
 interface TransactionsCardProps {
     hash: string
 }
@@ -8,6 +9,35 @@ interface TransactionsCardProps {
 const TransactionsCard: React.FC<TransactionsCardProps> = ({ hash }) => {
 
     const { data: txInfo } = useGetTxInfo(hash)
+    const toast = useToast()
+
+    const handleCancelTx = () => {
+        axios.get(`${process.env.NEXT_PUBLIC_URL}/api/cancel`, {
+            params: {
+                hash,
+            },
+        })
+            .then((result: any) => {
+                console.log("result?.data", result?.data)
+                toast({
+                    title: 'Tx Successfully Cancelled.',
+                    description: result?.data,
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                })
+            })
+            .catch((error: any) => {
+                console.log("Error", error);
+                toast({
+                    title: 'Cancellation failed.',
+                    description: error,
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                })
+            });
+    }
     return (
         <Card
             direction={{ base: 'column', sm: 'row' }}
@@ -42,6 +72,7 @@ const TransactionsCard: React.FC<TransactionsCardProps> = ({ hash }) => {
                                         <Text fontSize="xs">Status:</Text><Badge variant='solid' colorScheme='red'>{txInfo?.status}</Badge>
                                     </>
                                 }
+
                                 {txInfo?.status !== "INCLUDED" && (
                                     <>
                                         <Text fontSize="sm">simError:</Text>
@@ -53,6 +84,9 @@ const TransactionsCard: React.FC<TransactionsCardProps> = ({ hash }) => {
                             </HStack>
                         </VStack>
                         <Text fontSize="xs">Transactions will not show on Etherscan because we are using flashbot RPC to get tx straight to the miner not the mempool</Text>
+                        {(txInfo?.status === "INCLUDED" && txInfo?.status === "FAILED") && <VStack w="full" align="flex-end">
+                            <Button size="sm" onClick={handleCancelTx}>Cancel Tx</Button>
+                        </VStack>}
                     </VStack>
                 </CardFooter>
             </Stack>

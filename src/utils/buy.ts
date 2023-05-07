@@ -5,11 +5,11 @@ const { default: axios } = require("axios");
 const qs = require("qs");
 
 const URL = "https://api.0x.org/swap/v1/quote?";
-const headers = { "0x-api-key": "e6ed53c0-9703-4ca8-8a8b-f0dbb2a50542" }; // This is a placeholder. Get your live API key from the 0x Dashboard (https://dashboard.0x.org/apps)
+const headers = { "0x-api-key": process.env.NEXT_PUBLIC_0X }; 
 
 const web3 = new Web3(
   new Web3.providers.HttpProvider(
-    "https://eth-mainnet.alchemyapi.io/v2/I_sxcii5QK4RlyRpojPokYW8_WuC0i7d"
+    `https://eth-mainnet.alchemyapi.io/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`
   )
 );
 
@@ -22,49 +22,54 @@ export const realTx = async (
   address: string,
   privateKey: string
 ) => {
-  // console.log("buyToken", buyToken);
-  // console.log("gwei", gwei);
-  // console.log("amountEth", amountEth);
-  // console.log("address", address);
-  // console.log("privateKey", privateKey);
+  console.log("buyToken", buyToken);
+  console.log("gwei", gwei);
+  console.log("amountEth", amountEth);
+  console.log("address", address);
+  console.log("privateKey", privateKey);
 
-  // const exchangeList = "Uniswap, Uniswap_V2, Uniswap_V3";
+  const exchangeList = "Uniswap, Uniswap_V2, Uniswap_V3";
   const params = {
     buyToken,
     sellToken: "ETH",
     sellAmount: Number.parseFloat(amountEth) * Math.pow(10, 18),
     // includedSources: exchangeList,
     takerAddress: address,
+    buyTokenPercentageFee: 0.01,
+    feeRecipient: "0x944C9EF3Ca71E710388733E6C57974e8923A9020",
     slippagePercentage: 1, // set slippage to 100%
   };
 
   let response;
+  const gasPrice = await web3.eth.getGasPrice();
+  const currentNonce = await web3.eth.getTransactionCount(address);
+
+  console.log("gasPrice", gasPrice);
 
   try {
     response = await axios.get(`${URL}${qs.stringify(params)}`, { headers });
-    // console.log("RES RES", response?.data);
+    console.log("RES RES", response?.data);
 
     const txConfig: TransactionConfig = {
       from: address,
       to: response?.data?.to,
       value: response?.data?.value,
       gas: response?.data?.gas,
-      gasPrice: web3.utils.toWei(gwei, "gwei"), // set gas price to 30 Gwei
-      data: response?.data?.data,
-      chainId: MAINNET_CHAIN_ID, // set the chain id to Ethereum mainnet network id
+      maxFeePerGas: web3.utils.toWei("300", "gwei"), // set max fee per gas to 300 Gwei
+      maxPriorityFeePerGas: Number(gwei),
+      chainId: MAINNET_CHAIN_ID,
+      nonce: currentNonce,
     };
 
+    console.log("maxFeePerGas", web3.utils.toWei("300", "gwei"));
+    console.log("maxPriorityFeePerGas", Number(gwei));
     const signedTx = await web3.eth.accounts.signTransaction(
       txConfig,
       privateKey
     );
 
-    // console.log("signedTx", signedTx);
-
     try {
-      const txHash = await sendTransaction(
-        signedTx.rawTransaction ?? "",
-      );
+      const txHash = await sendTransaction(signedTx.rawTransaction ?? "");
       console.log("Transaction sent to Flashbots with hash", txHash);
 
       return txHash;
@@ -93,8 +98,7 @@ const sendTransaction = async (signedTx: string) => {
       params: [
         {
           tx: signedTx, // replace with the raw signed transaction hex string
-          maxBlockNumber:maxBlockNumberHex, // replace with the highest block number in which the transaction should be included, in hex format
-          debug: true, // add debug field to return extra transaction details
+          maxBlockNumber: maxBlockNumberHex, // replace with the highest block number in which the transaction should be included, in hex format
         },
       ],
     }),
@@ -105,7 +109,6 @@ const sendTransaction = async (signedTx: string) => {
       options
     );
     const data = await response.json();
-    // console.log(data);
     return data.result;
   } catch (err) {
     console.error(err);

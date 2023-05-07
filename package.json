@@ -26,6 +26,7 @@
     "@uniswap/sdk-core": "^3.2.2",
     "@uniswap/v3-sdk": "^3.9.0",
     "@uniswap/widgets": "^2.51.2",
+    "api": "^5.0.8",
     "connectkit": "^1.2.3",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
