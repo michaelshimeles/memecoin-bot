@@ -12,7 +12,6 @@ function fetchChangeMintWallet(username: string, public_key: string) {
       return result?.data;
     })
     .catch((error) => {
-      console.log("Error", error);
       throw error;
     });
 }

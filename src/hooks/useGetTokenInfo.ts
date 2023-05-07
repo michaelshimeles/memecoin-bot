@@ -12,7 +12,6 @@ function fetchTokenInfo(tokenAddress: string) {
       return result?.data;
     })
     .catch((error) => {
-      console.log("Error", error);
       throw error;
     });
 }

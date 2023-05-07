@@ -22,8 +22,7 @@ const PortfolioCard: React.FC<PortfolioCardProps> = ({ name, symbol, amount, add
 
 
         }).catch((error) => {
-            console.log("Error", error)
-
+            throw error
         })
     }
 

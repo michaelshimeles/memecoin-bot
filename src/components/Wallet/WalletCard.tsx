@@ -24,8 +24,7 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
 
             
         } catch (error) {
-
-            console.log("Err", error)
+            throw error
         }
     };
 
@@ -49,8 +48,7 @@ const WalletCard: React.FC<WalletCardProps> = ({ mintWallet }) => {
             const balance = await getBalance(wallet)
             setwBalance(balance)
         } catch (error) {
-            console.log("error", error)
-            return error
+            throw error
         }
 
     }

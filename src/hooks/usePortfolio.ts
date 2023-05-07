@@ -12,7 +12,6 @@ function fetchPortfolio(address: string) {
       return result?.data;
     })
     .catch((error) => {
-      console.log("Error", error);
       throw error;
     });
 }

@@ -28,7 +28,6 @@ const TransactionsCard: React.FC<TransactionsCardProps> = ({ hash }) => {
                 })
             })
             .catch((error: any) => {
-                console.log("Error", error);
                 toast({
                     title: 'Cancellation failed.',
                     description: error,
@@ -36,6 +35,8 @@ const TransactionsCard: React.FC<TransactionsCardProps> = ({ hash }) => {
                     duration: 9000,
                     isClosable: true,
                 })
+
+                throw error
             });
     }
     return (
