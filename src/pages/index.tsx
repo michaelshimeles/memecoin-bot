@@ -36,8 +36,8 @@ export default function Home() {
             <Tab>Wallet Manager</Tab>
             <Tab>Portfolio</Tab>
             <Tab>Transactions</Tab>
-            <Tab>Leaderboard</Tab>
-            <Tab>Global Chat</Tab>
+            {/* <Tab>Leaderboard</Tab>
+            <Tab>Global Chat</Tab> */}
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -54,7 +54,7 @@ export default function Home() {
             <TabPanel>
               <Transactions />
             </TabPanel>
-            <TabPanel>
+            {/* <TabPanel>
               <VStack>
                 <Center pt="5rem">
                   <Heading>Coming soon!</Heading>
@@ -67,7 +67,7 @@ export default function Home() {
                   <Heading>Coming soon!</Heading>
                 </Center>
               </VStack>
-            </TabPanel>
+            </TabPanel> */}
           </TabPanels>
         </Tabs>
 

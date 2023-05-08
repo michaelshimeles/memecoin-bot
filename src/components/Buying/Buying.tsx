@@ -23,6 +23,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { honeypot } from '@/utils/honeypot';
+// import { getPendingTokenTransactions } from '@/utils/pending';
 interface BuyingProps { }
 
 const Buying: React.FC<BuyingProps> = ({ }) => {
@@ -72,6 +73,7 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
 
     const handleTokenInfo = (e: any) => {
         console.log(e.target.value)
+        // getPendingTokenTransactions(e.target.value)
         setToken(e.target.value)
     }
     const { data } = useGetTokenInfo(token)
@@ -101,7 +103,7 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
                         <Input placeholder="token address" {...register("token", { required: true })} onChange={(e) => {
                             handleTokenInfo(e)
                             handleHoneyPotCheck(e)
-                        }} />
+                        }} /> 
                     </HStack>
                     {!honeypotStatus &&
                         <VStack w="full">
