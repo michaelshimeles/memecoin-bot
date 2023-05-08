@@ -12,7 +12,7 @@ function fetchChangeMintWallet(username: string, public_key: string) {
       return result?.data;
     })
     .catch((error) => {
-      throw error;
+      return error;
     });
 }
 

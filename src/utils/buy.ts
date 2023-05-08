@@ -79,7 +79,7 @@ export const realTx = async (
     }
   } catch (err: any) {
     console.error(err);
-    throw err?.response?.data?.reason;
+    return err?.response?.data?.reason;
   }
 };
 
@@ -112,6 +112,6 @@ const sendTransaction = async (signedTx: string) => {
     return data.result;
   } catch (err) {
     console.error(err);
-    throw err;
+    return err;
   }
 };

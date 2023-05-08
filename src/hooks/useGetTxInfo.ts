@@ -12,7 +12,7 @@ function fetchTransactions(hash: string) {
       return result?.data;
     })
     .catch((error) => {
-      throw error;
+      return error;
     });
 }
 

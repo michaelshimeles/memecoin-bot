@@ -1,30 +1,29 @@
 import { useGetMintWalletInfo } from '@/hooks/useGetMintWalletInfo';
+import { useGetTokenInfo } from '@/hooks/useGetTokenInfo';
 import { realTx } from '@/utils/buy';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Button,
     Divider,
-    Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, HStack,
+    Drawer, DrawerBody,
+    DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, HStack,
     Heading, Input,
     Stat,
     StatArrow,
     StatLabel,
     StatNumber,
     Text,
+    Tooltip,
     VStack,
     useDisclosure,
     useToast
 } from '@chakra-ui/react';
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { useForm } from "react-hook-form";
-import { useGetTokenInfo } from '@/hooks/useGetTokenInfo';
 import Link from 'next/link';
 import { useState } from 'react';
-import { ExternalLinkIcon } from '@chakra-ui/icons'
-
-
-interface BuyingProps {
-
-}
+import { useForm } from "react-hook-form";
+import { honeypot } from '@/utils/honeypot';
+interface BuyingProps { }
 
 const Buying: React.FC<BuyingProps> = ({ }) => {
     const toast = useToast()
@@ -32,6 +31,7 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
     const supabase = useSupabaseClient()
     const [token, setToken] = useState<string>("")
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [honeypotStatus, setHoneypotStatus] = useState<any>(null)
 
     const { data: walletInfo } = useGetMintWalletInfo(user?.user_metadata?.name)
 
@@ -75,7 +75,19 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
         setToken(e.target.value)
     }
     const { data } = useGetTokenInfo(token)
-    console.log("Token", data)
+
+    const handleHoneyPotCheck = async (e: any) => {
+        setHoneypotStatus(false)
+        const address = e.target.value
+        if (address === "" || address === " ") return
+
+        honeypot(address).then((result) => {
+            setHoneypotStatus(result?.honeypotResult.isHoneypot)
+        }).catch((error) => {
+            console.log(error)
+        })
+        return
+    }
 
     return (
         <VStack w="100%" pt="2rem">
@@ -86,13 +98,20 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
             }}>
                 <VStack gap="0.5rem" w="full">
                     <HStack w="full">
-                        <Input placeholder="token address" {...register("token", { required: true })} onChange={handleTokenInfo} />
+                        <Input placeholder="token address" {...register("token", { required: true })} onChange={(e) => {
+                            handleTokenInfo(e)
+                            handleHoneyPotCheck(e)
+                        }} />
                     </HStack>
-                    <Input placeholder="gwei" {...register("gwei", { required: true })} />
-                    <Input placeholder="ETH Amount" {...register("amount", { required: true })} />
-                    <Input defaultValue={walletInfo?.public_key} disabled />
+                    {!honeypotStatus &&
+                        <VStack w="full">
+                            <Input placeholder="gwei" {...register("gwei", { required: true })} w="full"/>
+                            <Input placeholder="ETH Amount" {...register("amount", { required: true })} w="full"/>
+                            <Input defaultValue={walletInfo?.public_key} disabled w="full"/>
+                        </VStack>
+                    }
                     <HStack pt="1rem" justify="center">
-                        <Button type="submit" variant="outline">Gen Wealth</Button>
+                        {!honeypotStatus ? <Button type="submit" variant="outline">Gen Wealth</Button> : <Button disabled variant="outline">🍯 Honey Pot</Button>}
                         {token && data?.pairs && <Button variant="outline" onClick={onOpen}>📊 Token Info</Button>}
                     </HStack>
                 </VStack>
@@ -160,7 +179,6 @@ const Buying: React.FC<BuyingProps> = ({ }) => {
                             </Stat>
                         </VStack>
                     </DrawerBody>
-
                     <DrawerFooter>
                         <Button variant='outline' mr={3} onClick={onClose}>
                             Close

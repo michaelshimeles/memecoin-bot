@@ -32,34 +32,25 @@ export const sell = async (
   //   takerAddress: address,
   //   slippagePercentage: 1, // set slippage to 100%
   // };
-
   // console.log("Params", params);
   // let response;
-
   // try {
   //   response = await fetch(`${URL}${qs.stringify(params)}`, { headers });
   //   const json = await response.json();
-
   //   console.log("RES RES", json);
-
   //   const tokenAddress = sellTokenAddress;
   //   const tokenContract = new ERC20TokenContract(
   //     tokenAddress,
   //     web3.eth.currentProvider
   //   );
-
   //   console.log("tokenContract", tokenContract);
   //   const maxApproval = BigNumber.from(2).pow(256).sub(1);
   //   console.log("maxApproval", maxApproval);
-
   //   const approvalTxData = tokenContract
   //     .approve(json.allowanceTarget, maxApproval)
   //     .getABIEncodedTransactionData();
-
   //   console.log("approvalTxData", approvalTxData);
-    
   //   await web3.eth.sendTransaction(approvalTxData);
-
   //   const txConfig: TransactionConfig = {
   //     to: json?.to,
   //     from: address,
@@ -69,18 +60,14 @@ export const sell = async (
   //     data: json?.data,
   //     chainId: MAINNET_CHAIN_ID, // set the chain id to Ethereum mainnet network id
   //   };
-
   //   const signedTx = await web3.eth.accounts.signTransaction(
   //     txConfig,
   //     privateKey
   //   );
-
   //   console.log("signedTx", signedTx);
-
   //   try {
   //     const txHash = await sendTransaction(signedTx.rawTransaction ?? "");
   //     console.log("Transaction sent to Flashbots with hash", txHash);
-
   //     return txHash;
   //   } catch (err) {
   //     console.error(`Error sending transaction to Flashbots: ${err}`);

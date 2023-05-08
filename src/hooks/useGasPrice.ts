@@ -8,7 +8,7 @@ function fetchGasPrice() {
       return result?.data;
     })
     .catch((error) => {
-      throw error;
+      return error;
     });
 }
 

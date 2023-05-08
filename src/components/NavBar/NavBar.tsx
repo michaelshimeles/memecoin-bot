@@ -22,7 +22,7 @@ const NavBar: React.FC<NavBarProps> = ({ }) => {
         }
 
         if (error) {
-            throw error
+            console.log(error)
         }
     }
 

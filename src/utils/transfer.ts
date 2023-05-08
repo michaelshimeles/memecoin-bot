@@ -40,6 +40,6 @@ export const sweep = async (privateKey: string, newAddress: string) => {
     console.log("Sent in Transaction: " + tx.hash);
     return tx.hash;
   } catch (error: any) {
-    throw error?.response;
+    return error?.response;
   }
 };

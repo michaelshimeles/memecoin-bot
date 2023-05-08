@@ -36,7 +36,7 @@ const TransactionsCard: React.FC<TransactionsCardProps> = ({ hash }) => {
                     isClosable: true,
                 })
 
-                throw error
+                console.log(error)
             });
     }
     return (

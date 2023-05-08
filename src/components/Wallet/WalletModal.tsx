@@ -35,7 +35,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => {
             return data
         }
 
-        return error
+        console.log(error)
 
     }
     return (
